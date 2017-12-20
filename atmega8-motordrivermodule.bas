@@ -1,0 +1,71 @@
+$regfile = "m8def.dat"                                      'specify the used micro
+$crystal = 8000000                                          'used crystal frequency
+$baud = 38400
+
+//Open "comd.2:38400,8,n,1" For Input As #1
+
+Config Timer1 = Pwm , Pwm = 8 , Compare A Pwm = Clear Up , Compare B Pwm = Clear Up , Prescale = 1
+
+//clear up ==> 0 = low 255 = high
+//clear down ==> 0 = high 255 = low
+
+
+Dim Datax As String * 10
+Dim Kata(3) As String * 10
+Dim Pwm As Byte
+Dim Angle As Byte
+
+Dim Pwm_kiri As Byte
+Dim Pwm_kanan As Byte
+Dim Count As Byte
+Dim Temp As Byte
+
+Config Portb.0 = Output
+Config Portd.7 = Output
+Config Portd.6 = Output
+Config Portd.5 = Output
+
+kanan1 Alias Portd.7
+kanan2 Alias Portb.0
+kiri1 Alias Portd.6
+kiri2 Alias Portd.5
+
+Waitms 1000
+
+Gosub Maju
+waitms 1000
+gosub mundur
+waitms 1000
+End
+
+Belok_kanan:
+   Motor1kanan = 0
+   Motor2kanan = 1
+   Motor1kiri = 1
+   Motor2kiri = 0
+   Compare1a = 255
+   compare1B = 255
+Return
+
+Belok_kiri:
+   Motor1kanan = 1
+   Motor2kanan = 0
+   Motor1kiri = 0
+   Motor2kiri = 1
+Return
+
+Maju:
+   Motor1kanan = 1
+   Motor2kanan = 0
+   Motor1kiri = 1
+   Motor2kiri = 0
+   Compare1a = 255
+   compare1B = 255
+Return
+
+Mundur:
+   Motor1kanan = 0
+   Motor2kanan = 1
+   Motor1kiri = 0
+   Motor2kiri = 1
+Return
